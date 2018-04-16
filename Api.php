@@ -1,8 +1,11 @@
 <?php
 
+namespace Acms\Plugins\GoogleSpreadSheet;
 use Acms\Services\Facades\Storage;
+use Google_Client;
+use Google_Service_Sheets;
 
-class AAPP_GoogleSpreadSheet_Api
+class Api
 {
     public function __construct()
     {
