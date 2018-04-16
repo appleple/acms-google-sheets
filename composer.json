@@ -1,0 +1,18 @@
+{
+  "name": "appleple/google-spreadsheet",
+  "description": "Google SpreadSheet API と連携し、お問い合わせフォームなどで送信された内容を任意のGoogle SpreadSheet の最後の行に追記することができます。",
+  "keywords": [
+    "SMS", "a-blog cms"
+  ],
+  "homepage": "https://www.a-blogcms.jp",
+  "require": {
+    "php": ">=5.3.3",
+    "google/apiclient": "~1.1.8"
+  },
+  "config": {
+    "vendor-dir": "vendor",
+    "platform": {
+      "php": "5.3.3"
+    }
+  }
+}
