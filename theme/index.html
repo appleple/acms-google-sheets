@@ -20,10 +20,10 @@
 			<input type="submit" name="ACMS_POST_Config" value="<!--T-->保存<!--/T-->" class="acms-admin-btn-admin acms-admin-btn-admin-primary acms-admin-btn-admin-save"/>
 			<!-- BEGIN_MODULE GoogleSpreadSheet_Admin -->
 				<!-- BEGIN_IF [{authorized}/eq/true] -->
-				<input type="submit" class="acms-admin-btn-admin acms-admin-btn-admin-danger" value="認証解除" name="ACMS_POST_GoogleSpreadSheet_Api_Deauthorize" />
+				<input type="submit" class="acms-admin-btn-admin acms-admin-btn-admin-danger" value="認証解除" name="ACMS_POST_GoogleSpreadSheet_Deauthorize" />
 				<!-- T -->認証済み<!-- /T -->
 				<!-- ELSE -->
-				<input type="submit" class="acms-admin-btn-admin" value="認証" name="ACMS_POST_GoogleSpreadSheet_Api_Auth" <!-- BEGIN_IF [\{spreadsheet_clientid_json\}/em] --> disabled<!-- END_IF -->/>
+				<input type="submit" class="acms-admin-btn-admin" value="認証" name="ACMS_POST_GoogleSpreadSheet_Auth" <!-- BEGIN_IF [\{spreadsheet_clientid_json\}/em] --> disabled<!-- END_IF -->/>
 				<!-- T -->認証してください<!-- /T -->
 				<!-- END_IF -->
 			<!-- END_MODULE GoogleSpreadSheet_Admin -->

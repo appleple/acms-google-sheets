@@ -7,7 +7,7 @@ use Template;
 use ACMS_Corrector;
 use Acms\Plugins\GoogleSpreadSheet\Api;
 
-class GoogleSpreadSheet_Api_Callback extends ACMS_GET
+class Callback extends ACMS_GET
 {
     public function get()
     {

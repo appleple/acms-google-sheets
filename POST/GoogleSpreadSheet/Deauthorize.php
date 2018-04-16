@@ -1,6 +1,9 @@
 <?php
+namespace Acms\Plugins\GoogleSpreadSheet\POST\GoogleSpreadSheet;
 
-class AAPP_GoogleSpreadSheet_POST_GoogleSpreadSheet_Api_Deauthorize extends ACMS_POST
+use ACMS_POST;
+
+class Deauthorize extends ACMS_POST
 {
     public function post()
     {
