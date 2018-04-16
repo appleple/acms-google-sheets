@@ -9,7 +9,7 @@ use Acms\Services\Facades\Storage;
 class ServiceProvider extends ACMS_APP
 {
     public $version     = '1.0.0';
-    public $name        = 'SpreadSheet';
+    public $name        = 'Google SpreadSheet';
     public $author      = 'com.appleple';
     public $module      = false;
     public $menu        = 'google_spreadsheet_index';
@@ -23,7 +23,7 @@ class ServiceProvider extends ACMS_APP
         require_once dirname(__FILE__).'/vendor/autoload.php';
         $hook = HookFactory::singleton();
         if (HOOK_ENABLE && class_exists('AAPP_GoogleSpreadSheet_Hook')) {
-            $Hook->attach('GoogleSpreadSheet', new Hook);
+            $hook->attach('GoogleSpreadSheet', new Hook);
         }
     }
     /**
@@ -50,7 +50,7 @@ class ServiceProvider extends ACMS_APP
             $to = THEMES_DIR . $theme . $path;
             $from = AAPP_LIB_DIR . 'GoogleSpreadSheet/theme' . $path;
             Storage::makeDirectory(THEMES_DIR . $theme . '/admin/app/google/spreadsheet');
-    
+
             if (!Storage::exists($to)) {
                 Storage::copy($from, $to);
             }
