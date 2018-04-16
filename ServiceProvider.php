@@ -22,9 +22,17 @@ class ServiceProvider extends ACMS_APP
     {
         require_once dirname(__FILE__).'/vendor/autoload.php';
         $hook = HookFactory::singleton();
-        if (HOOK_ENABLE && class_exists('AAPP_GoogleSpreadSheet_Hook')) {
-            $hook->attach('GoogleSpreadSheet', new Hook);
+        $hook->attach('GoogleSpreadSheet', new Hook);
+
+        if (ADMIN === 'app_google_spreadsheet_index') {
+            $inject = InjectTemplate::singleton();
+            $inject->add('admin-topicpath', PLUGIN_DIR . 'GoogleSpreadSheet/theme/topicpath.html');
+            $inject->add('admin-main', PLUGIN_DIR . 'GoogleSpreadSheet/theme/index.html');
+        } else if (ADMIN === 'app_google_spreadsheet_callback') {
+            $inject->add('admin-topicpath', PLUGIN_DIR . 'GoogleSpreadSheet/theme/topicpath.html');
+            $inject->add('admin-callback', PLUGIN_DIR . 'GoogleSpreadSheet/theme/callback.html');
         }
+        $inject->add('admin-form', PLUGIN_DIR . 'GoogleSpreadSheet/theme/form.html');
     }
     /**
      * インストールする前の環境チェック処理
@@ -44,19 +52,7 @@ class ServiceProvider extends ACMS_APP
      */
     public function install()
     {
-        function makeFile($path)
-        {
-            $theme = config('theme');
-            $to = THEMES_DIR . $theme . $path;
-            $from = AAPP_LIB_DIR . 'GoogleSpreadSheet/theme' . $path;
-            Storage::makeDirectory(THEMES_DIR . $theme . '/admin/app/google/spreadsheet');
 
-            if (!Storage::exists($to)) {
-                Storage::copy($from, $to);
-            }
-        }
-        makeFile('/admin/app/google/spreadsheet/index.html');
-        makeFile('/admin/app/google/spreadsheet/callback.html');
     }
 
     /**
