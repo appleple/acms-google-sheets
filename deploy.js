@@ -61,6 +61,9 @@ co(function* () {
     fs.copySync(`./README.md`, `GoogleSpreadSheet/README.md`);
     fs.copySync(`./Engine.php`, `GoogleSpreadSheet/Engine.php`);
     fs.copySync(`./Hook.php`, `GoogleSpreadSheet/Hook.php`);
+    fs.copySync(`./Api.php`, `GoogleSpreadSheet/Api.php`);
+    fs.copySync(`./GET`, `GoogleSpreadSheet/GET`);
+    fs.copySync(`./POST`, `GoogleSpreadSheet/POST`);
     fs.copySync(`./ServiceProvider.php`, `GoogleSpreadSheet/ServiceProvider.php`);
     yield systemCmd(`cd ./GoogleSpreadSheet; composer install`);
     yield zipPromise(`GoogleSpreadSheet`, `./build/GoogleSpreadSheet.zip`);
