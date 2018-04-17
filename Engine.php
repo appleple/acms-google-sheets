@@ -39,6 +39,7 @@ class Engine
         }
         $this->formField = $field;
         $this->module = $module;
+        $this->code = $code;
         $this->config = $field->getChild('mail');
     }
 
@@ -72,7 +73,7 @@ class Engine
         }
 
         if ($isFormIdChecked) {
-            $cellData = $this->getCellData($id);
+            $cellData = $this->getCellData($this->code);
             $values[] = $cellData;
         }
 
