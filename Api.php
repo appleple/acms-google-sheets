@@ -28,7 +28,6 @@ class Api
         $client->setApprovalPrompt("force");
         $redirect_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_spreadsheet_callback/';
         $base_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_spreadsheet_index/';
-        // var_dump($redirect_uri);
         $client->setRedirectUri($redirect_uri);
         $accessToken = json_decode(config('google_spreadsheet_accesstoken'), true);
         if ( $accessToken ) {
