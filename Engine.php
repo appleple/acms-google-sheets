@@ -6,6 +6,14 @@ use DB;
 use SQL;
 use Field;
 use Field_Validation;
+use Acms\Plugins\GoogleSpreadSheet\Api;
+use Google_Service_Sheets;
+use Google_Service_Sheets_Request;
+use Google_Service_Sheets_RowData;
+use Google_Service_Sheets_AppendCellsRequest;
+use Google_Service_Sheets_BatchUpdateSpreadsheetRequest;
+use Google_Service_Sheets_CellData;
+use Google_Service_Sheets_ExtendedValue;
 
 class Engine
 {
@@ -23,14 +31,15 @@ class Engine
      * Engine constructor.
      * @param string $code
      */
-    public function __construct($code)
+    public function __construct($code, $module)
     {
         $field = $this->loadFrom($code);
         if (empty($field)) {
             throw new \RuntimeException('Not Found Form.');
         }
         $this->formField = $field;
-        $this->config = $field->getChild('sheet');
+        $this->module = $module;
+        $this->config = $field->getChild('mail');
     }
 
     /**
@@ -38,30 +47,26 @@ class Engine
      */
     public function send()
     {
-        $client = (new AAPP_GoogleSpreadSheet_Api())->getClient();
+        $client = (new Api())->getClient();
 
         if (!$client->getAccessToken()) {
             return;
         }
 
-        $isTimeChecked = config('spreadsheet_submit_date');
-        $isFormIdChecked = config('spreadsheet_submit_formid');
-        $isUrlChecked = config('spreadsheet_submit_url');
-        $isIpChecked = config('spreadsheet_submit_ip');
-        $isAgentChecked = config('spreadsheet_submit_agent');
+        $isTimeChecked = $this->config->get('spreadsheet_submit_date');
+        $isFormIdChecked = $this->config->get('spreadsheet_submit_formid');
+        $isUrlChecked = $this->config->get('spreadsheet_submit_url');
+        $isIpChecked = $this->config->get('spreadsheet_submit_ip');
+        $isAgentChecked = $this->config->get('spreadsheet_submit_agent');
 
-        $field = $thisModule->Post->_aryChild['field'];
+        $field = $this->module->Post->getChild('field');
         $service = new Google_Service_Sheets($client);
-        $keys = array_keys($field->_aryMethod);
-        $id = $thisModule->Post->get('id');
-
-        if ($formId !== $id) {
-            continue;
-        }
+        $keys = array_keys($field->_aryField);
 
         $values = array();
         $spreadsheetId = $this->config->get('spreadsheet_id');
         $spreadsheetGid = $this->config->get('sheet_id');
+
         if (!$spreadsheetGid) {
             $spreadsheetGid = 0;
         }
@@ -117,14 +122,17 @@ class Engine
             'requests' => $requests
         ));
 
+
         try {
             // Execute the request
             $response = $service->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
+
             if ($response->valid()) {
                 // Success, the row has been added
                 return true;
             }
         } catch (Exception $e) {
+
             // Something went wrong
             error_log($e->getMessage());
         }

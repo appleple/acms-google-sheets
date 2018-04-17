@@ -13,13 +13,13 @@ class Hook
     public function afterPostFire($thisModule)
     {
         $moduleName = get_class($thisModule);
-        
+
         if ( $moduleName !== 'ACMS_POST_Form_Submit' ) {
             return;
         }
         $formCode = $thisModule->Post->get('id');
         try {
-            $engine = new Engine($formCode);
+            $engine = new Engine($formCode, $thisModule);
             $engine->send();
         } catch (\Exception $e) {
             userErrorLog('ACMS Warning: GoogleSpreadSheet plugin, ' . $e->getMessage());

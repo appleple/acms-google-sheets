@@ -23,14 +23,14 @@ class ServiceProvider extends ACMS_APP
         require_once dirname(__FILE__).'/vendor/autoload.php';
         $hook = HookFactory::singleton();
         $hook->attach('GoogleSpreadSheet', new Hook);
+        $inject = InjectTemplate::singleton();
 
         if (ADMIN === 'app_google_spreadsheet_index') {
-            $inject = InjectTemplate::singleton();
             $inject->add('admin-topicpath', PLUGIN_DIR . 'GoogleSpreadSheet/theme/topicpath.html');
             $inject->add('admin-main', PLUGIN_DIR . 'GoogleSpreadSheet/theme/index.html');
         } else if (ADMIN === 'app_google_spreadsheet_callback') {
             $inject->add('admin-topicpath', PLUGIN_DIR . 'GoogleSpreadSheet/theme/topicpath.html');
-            $inject->add('admin-callback', PLUGIN_DIR . 'GoogleSpreadSheet/theme/callback.html');
+            $inject->add('admin-main', PLUGIN_DIR . 'GoogleSpreadSheet/theme/callback.html');
         }
         $inject->add('admin-form', PLUGIN_DIR . 'GoogleSpreadSheet/theme/form.html');
     }
