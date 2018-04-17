@@ -1,11 +1,11 @@
 <?php
 
-namespace Acms\Plugins\GoogleSpreadSheet\GET\GoogleSpreadSheet;
+namespace Acms\Plugins\GoogleSheets\GET\GoogleSheets;
 
 use ACMS_GET;
 use Template;
 use ACMS_Corrector;
-use Acms\Plugins\GoogleSpreadSheet\Api;
+use Acms\Plugins\GoogleSheets\Api;
 
 class Admin extends ACMS_GET
 {

@@ -18,15 +18,15 @@
 	<div class="js-acms_fix_marker acms_fix_bg">
 		<div class="acms_fix_bg_index">
 			<input type="submit" name="ACMS_POST_Config" value="<!--T-->保存<!--/T-->" class="acms-admin-btn-admin acms-admin-btn-admin-primary acms-admin-btn-admin-save"/>
-			<!-- BEGIN_MODULE GoogleSpreadSheet_Admin -->
+			<!-- BEGIN_MODULE GoogleSheets_Admin -->
 				<!-- BEGIN_IF [{authorized}/eq/true] -->
-				<input type="submit" class="acms-admin-btn-admin acms-admin-btn-admin-danger" value="認証解除" name="ACMS_POST_GoogleSpreadSheet_Deauthorize" />
+				<input type="submit" class="acms-admin-btn-admin acms-admin-btn-admin-danger" value="認証解除" name="ACMS_POST_GoogleSheets_Deauthorize" />
 				<!-- T -->認証済み<!-- /T -->
 				<!-- ELSE -->
-				<input type="submit" class="acms-admin-btn-admin" value="認証" name="ACMS_POST_GoogleSpreadSheet_Auth" <!-- BEGIN_IF [\{spreadsheet_clientid_json\}/em] --> disabled<!-- END_IF -->/>
+				<input type="submit" class="acms-admin-btn-admin" value="認証" name="ACMS_POST_GoogleSheets_Auth" <!-- BEGIN_IF [\{spreadsheet_clientid_json\}/em] --> disabled<!-- END_IF -->/>
 				<!-- T -->認証してください<!-- /T -->
 				<!-- END_IF -->
-			<!-- END_MODULE GoogleSpreadSheet_Admin -->
+			<!-- END_MODULE GoogleSheets_Admin -->
 		</div>
 	</div>
 
@@ -41,7 +41,7 @@
 		</tr>
 		<tr>
 			<th><!-- T -->コールバックURL<!-- /T --></th>
-			<td><strong>%{BASE_URL}bid/%{BID}/admin/app_google_spreadsheet_callback/</strong></td>
+			<td><strong>%{BASE_URL}bid/%{BID}/admin/app_google_sheets_callback/</strong></td>
 		</tr>
 		<tr>
 			<th><!-- T -->スコープ<!-- /T --></th>

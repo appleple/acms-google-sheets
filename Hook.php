@@ -1,6 +1,6 @@
 <?php
 
-namespace Acms\Plugins\GoogleSpreadSheet;
+namespace Acms\Plugins\GoogleSheets;
 
 class Hook
 {

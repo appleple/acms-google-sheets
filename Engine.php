@@ -1,12 +1,12 @@
 <?php
 
-namespace Acms\Plugins\GoogleSpreadSheet;
+namespace Acms\Plugins\GoogleSheets;
 
 use DB;
 use SQL;
 use Field;
 use Field_Validation;
-use Acms\Plugins\GoogleSpreadSheet\Api;
+use Acms\Plugins\GoogleSheets\Api;
 use Google_Service_Sheets;
 use Google_Service_Sheets_Request;
 use Google_Service_Sheets_RowData;

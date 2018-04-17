@@ -1,8 +1,8 @@
 <?php
-namespace Acms\Plugins\GoogleSpreadSheet\POST\GoogleSpreadSheet;
+namespace Acms\Plugins\GoogleSheets\POST\GoogleSheets;
 
 use ACMS_POST;
-use Acms\Plugins\GoogleSpreadSheet\Api;
+use Acms\Plugins\GoogleSheets\Api;
 
 class Auth extends ACMS_POST
 {

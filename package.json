@@ -1,7 +1,7 @@
 {
-  "name": "acms-google-spreadsheet",
-  "version": "1.0.2",
-  "description": "Google SpreadSheet API と連携し、お問い合わせフォームなどで送信された内容を任意のGoogle SpreadSheet の最後の行に追記することができます。",
+  "name": "acms-google-sheets",
+  "version": "1.0.5",
+  "description": "Google Sheets API と連携し、お問い合わせフォームなどで送信された内容を任意のGoogle スプレッドシートの最後の行に追記することができます。",
   "main": "deploy.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/appleple/acms-google-spreadsheet.git"
+    "url": "git+ssh://git@github.com/appleple/acms-google-sheets.git"
   },
   "author": "appleple",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/appleple/acms-google-spreadsheet/issues"
+    "url": "https://github.com/appleple/acms-google-sheets/issues"
   },
-  "homepage": "https://github.com/appleple/acms-google-spreadsheet#readme",
+  "homepage": "https://github.com/appleple/acms-google-sheets#readme",
   "devDependencies": {
     "archiver": "^2.1.1",
     "co": "^4.6.0",

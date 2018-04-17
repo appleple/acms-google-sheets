@@ -1,11 +1,11 @@
 <?php
 
-namespace Acms\Plugins\GoogleSpreadSheet\GET\GoogleSpreadSheet;
+namespace Acms\Plugins\GoogleSheets\GET\GoogleSheets;
 
 use ACMS_GET;
 use Template;
 use ACMS_Corrector;
-use Acms\Plugins\GoogleSpreadSheet\Api;
+use Acms\Plugins\GoogleSheets\Api;
 
 class Callback extends ACMS_GET
 {
@@ -13,7 +13,7 @@ class Callback extends ACMS_GET
     {
         $api = new Api();
         $client = $api->getClient();
-        $base_uri = BASE_URL.'bid/'.BID.'/admin/app_google_spreadsheet_index';
+        $base_uri = BASE_URL.'bid/'.BID.'/admin/app_google_sheets_index';
         $code = $this->Get->get('code');
         $client->authenticate($code);
         $accessToken = $client->getAccessToken();

@@ -53,21 +53,21 @@ const zipPromise = (src, dist) => {
 
 co(function* () {
   try {
-    fs.mkdirsSync(`GoogleSpreadSheet`);
+    fs.mkdirsSync(`GoogleSheets`);
     fs.mkdirsSync(`build`);
-    fs.copySync(`./composer.json`, 'GoogleSpreadSheet/composer.json');
-    fs.copySync(`./composer.lock`, `GoogleSpreadSheet/composer.lock`);
-    fs.copySync(`./LICENSE`, `GoogleSpreadSheet/LICENSE`);
-    fs.copySync(`./README.md`, `GoogleSpreadSheet/README.md`);
-    fs.copySync(`./Engine.php`, `GoogleSpreadSheet/Engine.php`);
-    fs.copySync(`./Hook.php`, `GoogleSpreadSheet/Hook.php`);
-    fs.copySync(`./Api.php`, `GoogleSpreadSheet/Api.php`);
-    fs.copySync(`./GET`, `GoogleSpreadSheet/GET`);
-    fs.copySync(`./POST`, `GoogleSpreadSheet/POST`);
-    fs.copySync(`./ServiceProvider.php`, `GoogleSpreadSheet/ServiceProvider.php`);
-    yield systemCmd(`cd ./GoogleSpreadSheet; composer install`);
-    yield zipPromise(`GoogleSpreadSheet`, `./build/GoogleSpreadSheet.zip`);
-    fs.removeSync(`GoogleSpreadSheet`);
+    fs.copySync(`./composer.json`, 'GoogleSheets/composer.json');
+    fs.copySync(`./composer.lock`, `GoogleSheets/composer.lock`);
+    fs.copySync(`./LICENSE`, `GoogleSheets/LICENSE`);
+    fs.copySync(`./README.md`, `GoogleSheets/README.md`);
+    fs.copySync(`./Engine.php`, `GoogleSheets/Engine.php`);
+    fs.copySync(`./Hook.php`, `GoogleSheets/Hook.php`);
+    fs.copySync(`./Api.php`, `GoogleSheets/Api.php`);
+    fs.copySync(`./GET`, `GoogleSheets/GET`);
+    fs.copySync(`./POST`, `GoogleSheets/POST`);
+    fs.copySync(`./ServiceProvider.php`, `GoogleSheets/ServiceProvider.php`);
+    yield systemCmd(`cd ./GoogleSheets; composer install`);
+    yield zipPromise(`GoogleSheets`, `./build/GoogleSheets.zip`);
+    fs.removeSync(`GoogleSheets`);
     yield systemCmd('git add -A');
     yield systemCmd(`git commit -m "v${pkg.version}"`);
     yield systemCmd('git push');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Acms\Plugins\GoogleSpreadSheet;
+namespace Acms\Plugins\GoogleSheets;
 use Acms\Services\Facades\Storage;
 use DB;
 use SQL;
@@ -26,8 +26,8 @@ class Api
         }
         $client->setAccessType('offline');
         $client->setApprovalPrompt("force");
-        $redirect_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_spreadsheet_callback/';
-        $base_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_spreadsheet_index/';
+        $redirect_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_sheets_callback/';
+        $base_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_sheets_index/';
         $client->setRedirectUri($redirect_uri);
         $accessToken = json_decode(config('google_spreadsheet_accesstoken'), true);
         if ( $accessToken ) {

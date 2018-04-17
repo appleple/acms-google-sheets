@@ -1,7 +1,9 @@
 <?php
-namespace Acms\Plugins\GoogleSpreadSheet\POST\GoogleSpreadSheet;
+namespace Acms\Plugins\GoogleSheets\POST\GoogleSheets;
 
 use ACMS_POST;
+use DB;
+use SQL;
 
 class Deauthorize extends ACMS_POST
 {
@@ -15,7 +17,7 @@ class Deauthorize extends ACMS_POST
 
         $this->redirect(acmsLink(array(
             'bid' => BID,
-            'admin' => 'app_google_spreadsheet_index',
+            'admin' => 'app_google_sheets_index',
         )));
     }
 }

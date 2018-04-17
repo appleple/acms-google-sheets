@@ -1,5 +1,5 @@
 <?php
-namespace Acms\Plugins\GoogleSpreadSheet;
+namespace Acms\Plugins\GoogleSheets;
 
 use ACMS_App;
 use Acms\Services\Common\HookFactory;
@@ -9,11 +9,11 @@ use Acms\Services\Facades\Storage;
 class ServiceProvider extends ACMS_APP
 {
     public $version     = '1.0.0';
-    public $name        = 'Google SpreadSheet';
+    public $name        = 'Google Sheets';
     public $author      = 'com.appleple';
     public $module      = false;
-    public $menu        = 'google_spreadsheet_index';
-    public $desc        = 'フォームの内容を Google SpreadSheetに流し込むためのアプリです。';
+    public $menu        = 'google_sheets_index';
+    public $desc        = 'フォームの内容を Google スプレッドシートに流し込むためのアプリです。';
 
     /**
      * サービスの起動処理
@@ -22,17 +22,17 @@ class ServiceProvider extends ACMS_APP
     {
         require_once dirname(__FILE__).'/vendor/autoload.php';
         $hook = HookFactory::singleton();
-        $hook->attach('GoogleSpreadSheet', new Hook);
+        $hook->attach('GoogleSheets', new Hook);
         $inject = InjectTemplate::singleton();
 
-        if (ADMIN === 'app_google_spreadsheet_index') {
-            $inject->add('admin-topicpath', PLUGIN_DIR . 'GoogleSpreadSheet/theme/topicpath.html');
-            $inject->add('admin-main', PLUGIN_DIR . 'GoogleSpreadSheet/theme/index.html');
-        } else if (ADMIN === 'app_google_spreadsheet_callback') {
-            $inject->add('admin-topicpath', PLUGIN_DIR . 'GoogleSpreadSheet/theme/topicpath.html');
-            $inject->add('admin-main', PLUGIN_DIR . 'GoogleSpreadSheet/theme/callback.html');
+        if (ADMIN === 'app_google_sheets_index') {
+            $inject->add('admin-topicpath', PLUGIN_DIR . 'GoogleSheets/theme/topicpath.html');
+            $inject->add('admin-main', PLUGIN_DIR . 'GoogleSheets/theme/index.html');
+        } else if (ADMIN === 'app_google_sheets_callback') {
+            $inject->add('admin-topicpath', PLUGIN_DIR . 'GoogleSheets/theme/topicpath.html');
+            $inject->add('admin-main', PLUGIN_DIR . 'GoogleSheets/theme/callback.html');
         }
-        $inject->add('admin-form', PLUGIN_DIR . 'GoogleSpreadSheet/theme/form.html');
+        $inject->add('admin-form', PLUGIN_DIR . 'GoogleSheets/theme/form.html');
     }
     /**
      * インストールする前の環境チェック処理
