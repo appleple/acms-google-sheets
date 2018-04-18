@@ -3,7 +3,7 @@
 a-blog cms Ver.2.8.0より拡張アプリ「Google Sheets」を利用できるようになります。 a-blog cmsの拡張アプリ「[Google Sheets](https://www.google.com/sheets/about/)」を使うとお問い合わせフォームなどで送信された内容を任意のGoogle SpreadSheetの最後の行に追記することができます。
 
 ## ダウンロード
-(Google Sheets for a-blog cms)[https://github.com/appleple/acms-google-sheets/raw/master/build/GoogleSheets.zip]
+[Google Sheets for a-blog cms](https://github.com/appleple/acms-google-sheets/raw/master/build/GoogleSheets.zip)
 
 ## 下準備
 
