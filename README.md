@@ -1,10 +1,10 @@
-# Google SpreadSheet for a-blog cms
+# Google Sheets for a-blog cms
 
-a-blog cms Ver.2.8.0より拡張アプリ「Google SpreadSheet」を利用できるようになります。 a-blog cmsの拡張アプリ「[Google SpreadSheet](https://www.google.com/sheets/about/)」を使うとお問い合わせフォームなどで送信された内容を任意のGoogle SpreadSheetの最後の行に追記することができます。
+a-blog cms Ver.2.8.0より拡張アプリ「Google Sheets」を利用できるようになります。 a-blog cmsの拡張アプリ「[Google Sheets](https://www.google.com/sheets/about/)」を使うとお問い合わせフォームなどで送信された内容を任意のGoogle SpreadSheetの最後の行に追記することができます。
 
 ## 下準備
 
-以下の2つのステップで a-blog cms と [Google SpreadSheet](https://www.google.com/sheets/about/) を連携します。
+以下の2つのステップで a-blog cms と [Google Sheets](https://www.google.com/sheets/about/) を連携します。
 
 1. ClientID JSON の取得
 2. ClientID JSON を CMS側に登録
@@ -29,7 +29,7 @@ a-blog cms Ver.2.8.0より拡張アプリ「Google SpreadSheet」を利用でき
 
 <img src="./images/get_oauth_client.png" />
 
-最後に「認証情報」をクリックして認証情報の設定画面に移動します。そこで新たにOAuth クライアント ID を作成します。 アプリケーションの種類として、「ウェブアプリケーション」を設定して、「認証済みのリダイレクトURI」には「ドメイン名/bid/（現在使用しているブログのBID）/admin/app_google_spreadsheet_callback」を設定します。
+最後に「認証情報」をクリックして認証情報の設定画面に移動します。そこで新たにOAuth クライアント ID を作成します。 アプリケーションの種類として、「ウェブアプリケーション」を設定して、「認証済みのリダイレクトURI」には「ドメイン名/bid/（現在使用しているブログのBID）/admin/app_google_sheets_callback/」を設定します。
 
 <img src="./images/download_json.png" />
 
@@ -44,7 +44,7 @@ a-blog cms Ver.2.8.0より拡張アプリ「Google SpreadSheet」を利用でき
 define('HOOK_ENABLE', 1);
 ```
 
-管理画面 > 拡張アプリより、 Google SpreadSheet をインストールします。インストール完了後は、管理画面 > Google SpreadSheet より Google Spread Sheet の管理画面に移動します。
+管理画面 > 拡張アプリより、 Google Sheets をインストールします。インストール完了後は、管理画面 > Google Sheets より Google Sheets の管理画面に移動します。
 
 <img src="./images/app_screen.png" />
 そして先ほど設置したJSONファイルへのパスを記述します。絶対パスで記述しましょう。パスを記述後、設定を保存してから、「認証」ボタンをクリックして認証するようにしましょう。
@@ -54,15 +54,10 @@ define('HOOK_ENABLE', 1);
 
 <img src="./images/set_sheetid.png" />
 
-またこの管理ページ内でa-blog cmsのFormIDに対して書き込みしたい Google Spreadsheet のIDを指定する必要があります。 Spreadsheet IDと Sheet ID は、開いている SpreadSheet のURLから調べることができます。
+またこの管理ページ内でa-blog cmsのFormIDに対して書き込みしたい Google Sheets のIDを指定する必要があります。 SpreadsheetIDと SheetID は、開いている スプレッドシートのURLから調べることができます。
 
-https://docs.google.com/spreadsheets/d/{Spreadsheet ID}/edit#gid={Sheet ID}
+https://docs.google.com/spreadsheets/d/{SpreadsheetID}/edit#gid={SheetID}
 
-設定が完了すれば、お問い合わせフォームから送信された内容を Google SpreadSheet に自動で追加登録できます。下の図のような実行結果になっていれば成功です。
+設定が完了すれば、お問い合わせフォームから送信された内容を Google Sheets に自動で追加登録できます。下の図のような実行結果になっていれば成功です。
 
 <img src="./images/spreadsheet.png" />
-
-
-
-
-
