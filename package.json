@@ -1,6 +1,6 @@
 {
   "name": "acms-google-sheets",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Google Sheets API と連携し、お問い合わせフォームなどで送信された内容を任意のGoogle スプレッドシートの最後の行に追記することができます。",
   "main": "deploy.js",
   "scripts": {
