@@ -1,5 +1,5 @@
 {
-  "name": "appleple/google-spreadsheet",
+  "name": "appleple/acms-google-sheets",
   "description": "Google SpreadSheet API と連携し、お問い合わせフォームなどで送信された内容を任意のGoogle SpreadSheet の最後の行に追記することができます。",
   "keywords": [
     "SMS", "a-blog cms"
