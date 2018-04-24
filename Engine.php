@@ -5,8 +5,6 @@ namespace Acms\Plugins\GoogleSheets;
 use DB;
 use SQL;
 use Field;
-use Field_Validation;
-use Acms\Plugins\GoogleSheets\Api;
 use Google_Service_Sheets;
 use Google_Service_Sheets_Request;
 use Google_Service_Sheets_RowData;
@@ -44,67 +42,54 @@ class Engine
     }
 
     /**
-     * Send
+     * Update Google Sheets
      */
     public function send()
     {
-        $client = (new Api())->getClient();
-
-        if (!$client->getAccessToken()) {
-            return;
-        }
-
-        $isTimeChecked = $this->config->get('spreadsheet_submit_date');
-        $isFormIdChecked = $this->config->get('spreadsheet_submit_formid');
-        $isUrlChecked = $this->config->get('spreadsheet_submit_url');
-        $isIpChecked = $this->config->get('spreadsheet_submit_ip');
-        $isAgentChecked = $this->config->get('spreadsheet_submit_agent');
-
         $field = $this->module->Post->getChild('field');
-        $service = new Google_Service_Sheets($client);
-        $keys = array_keys($field->_aryField);
-
+        $checkItems = array(
+            'formId' => $this->config->get('spreadsheet_submit_formid'),
+            'time' => $this->config->get('spreadsheet_submit_date'),
+            'url' => $this->config->get('spreadsheet_submit_url'),
+            'ipAddr' => $this->config->get('spreadsheet_submit_ip'),
+            'ua' => $this->config->get('spreadsheet_submit_agent'),
+        );
         $values = array();
+
+        foreach ($checkItems as $item => $check) {
+            if ($check !== 'true') {
+                continue;
+            }
+            $method = 'get' .ucwords($item);
+            if (is_callable(array('self', $method))) {
+                $values[] = call_user_func(array($this, $method));
+            }
+        }
+        foreach ($field->_aryField as $key => $val) {
+            $values[] = $this-> getCellData($field->get($key));
+        }
+        $this->update($values);
+    }
+
+    /**
+     * Send Google Sheets Api
+     *
+     * @param array $values
+     */
+    protected function update($values)
+    {
+        $client = (new Api())->getClient();
+        if (!$client->getAccessToken()) {
+            throw new \RuntimeException('Failed to get the access token.');
+        }
+        $service = new Google_Service_Sheets($client);
         $spreadsheetId = $this->config->get('spreadsheet_id');
-        $spreadsheetGid = $this->config->get('sheet_id');
-
-        if (!$spreadsheetGid) {
-            $spreadsheetGid = 0;
-        }
-
-        if ($isFormIdChecked) {
-            $cellData = $this->getCellData($this->code);
-            $values[] = $cellData;
-        }
-
-        if ($isTimeChecked) {
-            $cellData = $this->getCellData(date('Y-m-d H:i:s', REQUEST_TIME));
-            $values[] = $cellData;
-        }
-
-        if ($isUrlChecked) {
-            $cellData = $this->getCellData(REQUEST_URL);
-            $values[] = $cellData;
-        }
-
-        if ($isIpChecked) {
-            $cellData = $this->getCellData(REMOTE_ADDR);
-            $values[] = $cellData;
-        }
-
-        if ($isAgentChecked) {
-            $cellData = $this->getCellData(UA);
-            $values[] = $cellData;
-        }
-
-        foreach ($keys as $key) {
-            $cellData = $this->getCellData($field->get($key));
-            $values[] = $cellData;
-        }
+        $spreadsheetGid = $this->config->get('sheet_id', 0);
 
         // Build the RowData
         $rowData = new Google_Service_Sheets_RowData();
         $rowData->setValues($values);
+
         // Prepare the request
         $append_request = new Google_Service_Sheets_AppendCellsRequest();
         $append_request->setSheetId($spreadsheetGid);
@@ -118,24 +103,16 @@ class Engine
         // Add the request to the requests array
         $requests = array();
         $requests[] = $request;
+
         // Prepare the update
         $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest(array(
             'requests' => $requests
         ));
+        // Execute the request
+        $response = $service->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
 
-
-        try {
-            // Execute the request
-            $response = $service->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
-
-            if ($response->valid()) {
-                // Success, the row has been added
-                return true;
-            }
-        } catch (Exception $e) {
-
-            // Something went wrong
-            error_log($e->getMessage());
+        if (!$response->valid()) {
+            throw new \RuntimeException('Failed to update the sheet.');
         }
     }
 
@@ -164,6 +141,10 @@ class Engine
         return $Form;
     }
 
+    /**
+     * @param string $value
+     * @return \Google_Service_Sheets_CellData
+     */
     private function getCellData($value)
     {
         $cellData = new Google_Service_Sheets_CellData();
@@ -171,5 +152,45 @@ class Engine
         $extendedValue->setStringValue($value);
         $cellData->setUserEnteredValue($extendedValue);
         return $cellData;
+    }
+
+    /**
+     * @return \Google_Service_Sheets_CellData
+     */
+    private function getTime()
+    {
+        return $this->getCellData(date('Y-m-d H:i:s', REQUEST_TIME));
+    }
+
+    /**
+     * @return \Google_Service_Sheets_CellData
+     */
+    private function getFormId()
+    {
+        return $this->getCellData($this->code);
+    }
+
+    /**
+     * @return \Google_Service_Sheets_CellData
+     */
+    private function getUrl()
+    {
+        return $this->getCellData(REQUEST_URL);
+    }
+
+    /**
+     * @return \Google_Service_Sheets_CellData
+     */
+    private function getIpAddr()
+    {
+        return $this->getCellData(REMOTE_ADDR);
+    }
+
+    /**
+     * @return \Google_Service_Sheets_CellData
+     */
+    private function getUa()
+    {
+        return $this->getCellData(UA);
     }
 }
