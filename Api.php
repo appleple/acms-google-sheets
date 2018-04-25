@@ -7,6 +7,7 @@ use DB;
 use SQL;
 use Google_Client;
 use Google_Service_Sheets;
+use Google_Exception;
 
 class Api
 {
