@@ -6,7 +6,7 @@ use Acms\Services\Common\HookFactory;
 use Acms\Services\Common\InjectTemplate;
 use Acms\Services\Facades\Storage;
 
-class ServiceProvider extends ACMS_APP
+class ServiceProvider extends ACMS_App
 {
     public $version     = '1.0.0';
     public $name        = 'Google Sheets';

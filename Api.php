@@ -1,38 +1,36 @@
 <?php
 
 namespace Acms\Plugins\GoogleSheets;
+
 use Acms\Services\Facades\Storage;
 use DB;
 use SQL;
 use Google_Client;
 use Google_Service_Sheets;
+use Google_Exception;
 
 class Api
 {
+    /**
+     * Api constructor.
+     */
     public function __construct()
     {
-        $scopes = implode(' ', array(
-                Google_Service_Sheets::SPREADSHEETS)
-        );
+        $scopes = implode(' ', array(Google_Service_Sheets::SPREADSHEETS));
         $client = new Google_Client();
         $idJsonPath = config('spreadsheet_clientid_json');
         $client->setApplicationName('ACMS');
         $client->setScopes($scopes);
         $this->client = $client;
-        try {
-            $this->setAuthConfig($idJsonPath);
-        } catch ( Exception $e ) {
-            return;
-        }
+        $this->setAuthConfig($idJsonPath);
         $client->setAccessType('offline');
         $client->setApprovalPrompt("force");
         $redirect_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_sheets_callback/';
-        $base_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_sheets_index/';
         $client->setRedirectUri($redirect_uri);
         $accessToken = json_decode(config('google_spreadsheet_accesstoken'), true);
-        if ( $accessToken ) {
+        if ($accessToken) {
             $client->setAccessToken($accessToken);
-            if ( $client->isAccessTokenExpired() ) {
+            if ($client->isAccessTokenExpired()) {
                 $refreshToken = $client->getRefreshToken();
                 $client->refreshToken($refreshToken);
                 $accessToken = $client->getAccessToken();
@@ -43,18 +41,18 @@ class Api
 
     public function setAuthConfig($json)
     {
-        if ( !Storage::exists($json) ) {
+        if (!Storage::exists($json)) {
             throw new \RuntimeException('Failed to open ' . $json);
         }
         $json = file_get_contents($json);
         $data = json_decode($json);
         $key = isset($data->installed) ? 'installed' : 'web';
-        if ( !isset($data->$key) ) {
+        if (!isset($data->$key)) {
             throw new Google_Exception("Invalid client secret JSON file.");
         }
         $this->client->setClientId($data->$key->client_id);
         $this->client->setClientSecret($data->$key->client_secret);
-        if ( isset($data->$key->redirect_uris) ) {
+        if (isset($data->$key->redirect_uris)) {
             $this->client->setRedirectUri($data->$key->redirect_uris[0]);
         }
     }
