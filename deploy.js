@@ -64,6 +64,7 @@ co(function* () {
     fs.copySync(`./Api.php`, `GoogleSheets/Api.php`);
     fs.copySync(`./GET`, `GoogleSheets/GET`);
     fs.copySync(`./POST`, `GoogleSheets/POST`);
+    fs.copySync(`./theme`, `GoogleSheets/theme`);
     fs.copySync(`./ServiceProvider.php`, `GoogleSheets/ServiceProvider.php`);
     yield systemCmd(`cd ./GoogleSheets; composer install`);
     yield zipPromise(`GoogleSheets`, `./build/GoogleSheets.zip`);
