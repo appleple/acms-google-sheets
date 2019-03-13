@@ -14,7 +14,10 @@ class Callback extends ACMS_GET
         try {
             $api = new Api();
             $client = $api->getClient();
-            $base_uri = BASE_URL.'bid/'.BID.'/admin/app_google_sheets_index';
+            $base_uri = acmsLink(array(
+                'bid' => BID,
+                'admin' => 'app_google_sheets_index',
+            ));
             $code = $this->Get->get('code');
             $client->authenticate($code);
             $accessToken = $client->getAccessToken();

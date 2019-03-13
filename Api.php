@@ -25,7 +25,10 @@ class Api
         $this->setAuthConfig($idJsonPath);
         $client->setAccessType('offline');
         $client->setApprovalPrompt("force");
-        $redirect_uri = BASE_URL . 'bid/' . BID . '/admin/app_google_sheets_callback/';
+        $redirect_uri = acmsLink(array(
+            'bid' => BID,
+            'admin' => 'app_google_sheets_callback',
+        ));
         $client->setRedirectUri($redirect_uri);
         $accessToken = json_decode(config('google_spreadsheet_accesstoken'), true);
         if ($accessToken) {
