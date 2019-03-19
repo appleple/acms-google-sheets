@@ -13,7 +13,8 @@ class Admin extends ACMS_GET
     {
         $Tpl = new Template($this->tpl, new ACMS_Corrector());
         try {
-            $client = (new Api())->getClient();
+            $api = new Api();
+            $client = $api->getClient();
             $authorized = 'false';
             if ($client->getAccessToken() && !$client->isAccessTokenExpired()) {
                 $authorized = 'true';
