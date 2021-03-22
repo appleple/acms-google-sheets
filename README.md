@@ -34,6 +34,8 @@ a-blog cms Ver.2.8.0より拡張アプリ「Google Sheets」を利用できる�
 
 最後に「認証情報」をクリックして認証情報の設定画面に移動します。そこで新たにOAuth クライアント ID を作成します。 アプリケーションの種類として、「ウェブアプリケーション」を設定して、「認証済みのリダイレクトURI」には「ドメイン名/bid/（現在使用しているブログのBID）/admin/app_google_sheets_callback/」を設定します。
 
+※ablogcms.ioで行う場合は、「OAuth同意画面」のページにある公開ステータスの項目を「テスト」にすることで「認証済みのリダイレクトURI」に正常に登録できます（2021年3月現在）
+
 <img src="./images/download_json.png" />
 
 その後、クライアントIDなどの情報が記述されたJSONファイルをダウンロードしましょう。その後、ダウンロードしたJSONファイルをサーバーにアップロードします。ドキュメントルート以下にアップロードをするとブラウザからアクセスできてしまいますので、ドキュメントルートより上の階層にアップロードするのが望ましいです。
@@ -54,10 +56,13 @@ define('HOOK_ENABLE', 1);
 
 ※ablogcms.ioで行う場合は、ルートディレクトリには設置できないため、「themes」フォルダなどにJSONファイルを設置します。 ablogcms.ioでの記述例： /var/www/vhost/xxxxxx.ablogcms.io/html/themes/xxxxxxxx.json
 
+## 3. フォームIDにカキコミしたいSpreadsheetIDとSheetIDを紐づける
+
+さらにCMSの管理ページで、フォームIDに対して書き込みしたい Google Sheets のIDを指定する必要があります。管理画面 > フォームより、Googleスプレッドシートと紐付けたいフォームIDの変更画面に移動すると、「Google スプレッドシート Form 設定」という項目が増えています。
 
 <img src="./images/set_sheetid.png" />
 
-またこの管理ページ内でa-blog cmsのFormIDに対して書き込みしたい Google Sheets のIDを指定する必要があります。 SpreadsheetIDと SheetID は、開いている スプレッドシートのURLから調べることができます。
+ SpreadsheetIDと SheetID は、開いている スプレッドシートのURLから調べることができます。
 
 https://docs.google.com/spreadsheets/d/{SpreadsheetID}/edit#gid={SheetID}
 
