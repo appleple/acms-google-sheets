@@ -26,6 +26,11 @@ class Engine
     protected $config;
 
     /**
+     * @var string
+     */
+    protected $glue;
+
+    /**
      * Engine constructor.
      * @param string $code
      */
@@ -39,6 +44,7 @@ class Engine
         $this->module = $module;
         $this->code = $code;
         $this->config = $field->getChild('mail');
+        $this->glue = $this->config->get('cell_glue', ',');
     }
 
     /**
@@ -66,7 +72,7 @@ class Engine
             }
         }
         foreach ($field->_aryField as $key => $val) {
-            $values[] = $this-> getCellData($field->get($key));
+            $values[] = $this->getCellData($field->getArray($key), $this->glue);
         }
         $this->update($values);
     }
@@ -142,11 +148,15 @@ class Engine
     }
 
     /**
-     * @param string $value
+     * @param array|string $value
+     * @param string $glue
      * @return \Google_Service_Sheets_CellData
      */
-    private function getCellData($value)
+    private function getCellData($value, $glue = ',')
     {
+        if (is_array($value)) {
+            $value = implode($glue, $value);
+        }
         $cellData = new Google_Service_Sheets_CellData();
         $extendedValue = new Google_Service_Sheets_ExtendedValue();
         $extendedValue->setStringValue($value);
