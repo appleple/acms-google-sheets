@@ -2,8 +2,6 @@
 
 namespace Acms\Plugins\GoogleSheets;
 
-use DB;
-use SQL;
 use Field;
 use Google_Service_Sheets;
 use Google_Service_Sheets_Request;
@@ -16,9 +14,14 @@ use Google_Service_Sheets_ExtendedValue;
 class Engine
 {
     /**
-     * @var \Field
+     * @var \ACMS_POST
      */
-    protected $formField;
+    protected $module;
+
+    /**
+     * @var string
+     */
+    protected $code;
 
     /**
      * @var \Field
@@ -36,14 +39,13 @@ class Engine
      */
     public function __construct($code, $module)
     {
-        $field = $this->loadFrom($code);
-        if (empty($field)) {
+        $info = $module->loadForm($code);
+        if (empty($info)) {
             throw new \RuntimeException('Not Found Form.');
         }
-        $this->formField = $field;
         $this->module = $module;
         $this->code = $code;
-        $this->config = $field->getChild('mail');
+        $this->config = $info['data']->getChild('mail');
         $this->glue = $this->config->get('cell_glue', ',');
     }
 
@@ -120,31 +122,6 @@ class Engine
         if (!$response->valid()) {
             throw new \RuntimeException('Failed to update the sheet.');
         }
-    }
-
-
-    /**
-     * @param string $code
-     * @return bool|Field
-     */
-    protected function loadFrom($code)
-    {
-        $DB = DB::singleton(dsn());
-        $SQL = SQL::newSelect('form');
-        $SQL->addWhereOpr('form_code', $code);
-        $row = $DB->query($SQL->get(dsn()), 'row');
-
-        if (!$row) {
-            return false;
-        }
-        $Form = new Field();
-        $Form->set('code', $row['form_code']);
-        $Form->set('name', $row['form_name']);
-        $Form->set('scope', $row['form_scope']);
-        $Form->set('log', $row['form_log']);
-        $Form->overload(unserialize($row['form_data']), true);
-
-        return $Form;
     }
 
     /**

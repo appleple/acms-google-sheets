@@ -19,6 +19,7 @@ class Hook
         if (!($thisModule instanceof ACMS_POST_Form_Submit)) {
             return;
         }
+
         if (!$thisModule->Post->isValidAll()) {
             return;
         }
