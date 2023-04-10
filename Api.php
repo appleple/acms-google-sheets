@@ -41,9 +41,14 @@ class Api
             $client->setAccessToken($accessToken);
             if ($client->isAccessTokenExpired()) {
                 $refreshToken = $client->getRefreshToken();
-                $client->refreshToken($refreshToken);
-                $accessToken = $client->getAccessToken();
-                $this->updateAccessToken($accessToken);
+                try {
+                    $client->refreshToken($refreshToken);
+                    $accessToken = $client->getAccessToken();
+                    $this->updateAccessToken(json_encode($accessToken));
+                } catch (\Exception $e) {
+                    userErrorLog('ACMS Error: In GoogleSheets extension -> ' . $e->getMessage());
+                    $this->updateAccessToken('');
+                }
             }
         }
     }
@@ -90,7 +95,7 @@ class Api
 
         $InsertSQL = SQL::newInsert('config');
         $InsertSQL->addInsert('config_key', 'google_spreadsheet_accesstoken');
-        $InsertSQL->addInsert('config_value', json_encode($accessToken));
+        $InsertSQL->addInsert('config_value', $accessToken);
         $InsertSQL->addInsert('config_blog_id', BID);
         $DB->query($InsertSQL->get(dsn()), 'exec');
     }
