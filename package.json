@@ -1,6 +1,6 @@
 {
   "name": "acms-google-sheets",
-  "version": "1.0.17",
+  "version": "2.0.0",
   "description": "Google Sheets API と連携し、お問い合わせフォームなどで送信された内容を任意のGoogle スプレッドシートの最後の行に追記することができます。",
   "main": "deploy.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "release:commit": "node ./tools/commit.js",
     "release:patch": "npm version patch --no-git-tag-version && npm run version:sync && npm run package && npm run release:commit",
     "release:minor": "npm version minor --no-git-tag-version && npm run version:sync && npm run package && npm run release:commit",
-    "release:major": "npm version mejor --no-git-tag-version && npm run version:sync && npm run package && npm run release:commit",
+    "release:major": "npm version major --no-git-tag-version && npm run version:sync && npm run package && npm run release:commit",
     "setup": "node ./tools/setup.js"
   },
   "repository": {
