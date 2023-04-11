@@ -7,13 +7,21 @@
   ],
   "homepage": "https://www.a-blogcms.jp",
   "require": {
-    "php": ">=5.3.3",
-    "google/apiclient": "~1.1.8"
+    "php": ">=5.6",
+    "google/apiclient": "2.*.*"
+  },
+  "scripts": {
+    "post-update-cmd": "Google_Task_Composer::cleanup"
+  },
+  "extra": {
+    "google/apiclient-services": [
+      "Sheets"
+    ]
   },
   "config": {
     "vendor-dir": "vendor",
     "platform": {
-      "php": "5.3.3"
+      "php": "5.6"
     }
   }
 }
