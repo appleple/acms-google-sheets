@@ -13,41 +13,42 @@ use Google_Exception;
 
 class Api
 {
+    protected $client = null;
+    
     /**
      * Api constructor.
      */
     public function __construct()
     {
         $scopes = implode(' ', array(Google_Service_Sheets::SPREADSHEETS));
-        $client = new Google_Client();
 
         $this->config = Config::loadDefaultField();
         $this->config->overload(Config::loadBlogConfig(BID));
-
+        $accessToken = json_decode($this->config->get('google_spreadsheet_accesstoken'), true);
+        $refreshToken = json_decode($this->config->get('google_spreadsheet_refreshtoken'), true);
+        
+        $this->client = new Google_Client();
         $idJsonPath = $this->config->get('spreadsheet_clientid_json');
-        $client->setApplicationName('ACMS');
-        $client->setScopes($scopes);
-        $this->client = $client;
+        $this->client->setApplicationName('ACMS');
+        $this->client->setScopes($scopes);
         $this->setAuthConfig($idJsonPath);
-        $client->setAccessType('offline');
-        $client->setApprovalPrompt("force");
+        $this->client->setAccessType('offline');
+        $this->client->setApprovalPrompt("force");
         $redirect_uri = acmsLink(array(
             'bid' => BID,
             'admin' => 'app_google_sheets_callback',
         ));
-        $client->setRedirectUri($redirect_uri);
-        $accessToken = json_decode($this->config->get('google_spreadsheet_accesstoken'), true);
+        $this->client->setRedirectUri($redirect_uri);
         if ($accessToken) {
-            $client->setAccessToken($accessToken);
-            if ($client->isAccessTokenExpired()) {
-                $refreshToken = $client->getRefreshToken();
+            $this->client->setAccessToken($accessToken);
+            if ($this->client->isAccessTokenExpired()) {
                 try {
-                    $client->refreshToken($refreshToken);
-                    $accessToken = $client->getAccessToken();
-                    $this->updateAccessToken(json_encode($accessToken));
+                    $this->client->refreshToken($refreshToken);
+                    $accessToken = $this->client->getAccessToken();
+                    $refreshToken = $this->client->getRefreshToken();
+                    $this->updateAccessToken(json_encode($accessToken), json_encode($refreshToken));
                 } catch (\Exception $e) {
                     userErrorLog('ACMS Error: In GoogleSheets extension -> ' . $e->getMessage());
-                    $this->updateAccessToken('');
                 }
             }
         }
@@ -82,21 +83,36 @@ class Api
         return $accessToken;
     }
 
-    public function updateAccessToken($accessToken)
+    public function updateAccessToken($accessToken, $refreshToken)
     {
+        if (!!$accessToken) {
+            $DB = DB::singleton(dsn());
+            $RemoveSQL = SQL::newDelete('config');
+            $RemoveSQL->addWhereOpr('config_blog_id', BID);
+            $RemoveSQL->addWhereOpr('config_key', 'google_spreadsheet_accesstoken');
+            $DB->query($RemoveSQL->get(dsn()), 'exec');
+    
+            $InsertSQL = SQL::newInsert('config');
+            $InsertSQL->addInsert('config_key', 'google_spreadsheet_accesstoken');
+            $InsertSQL->addInsert('config_value', $accessToken);
+            $InsertSQL->addInsert('config_blog_id', BID);
+            $DB->query($InsertSQL->get(dsn()), 'exec');
+        }
+        if (!!$refreshToken) {
+            $DB = DB::singleton(dsn());
+            $RemoveSQL = SQL::newDelete('config');
+            $RemoveSQL->addWhereOpr('config_blog_id', BID);
+            $RemoveSQL->addWhereOpr('config_key', 'google_spreadsheet_refreshtoken');
+            $DB->query($RemoveSQL->get(dsn()), 'exec');
+    
+            $InsertSQL = SQL::newInsert('config');
+            $InsertSQL->addInsert('config_key', 'google_spreadsheet_refreshtoken');
+            $InsertSQL->addInsert('config_value', $refreshToken);
+            $InsertSQL->addInsert('config_blog_id', BID);
+            $DB->query($InsertSQL->get(dsn()), 'exec');
+        }
         if (class_exists('Cache')) {
             Cache::flush('config');
         }
-        $DB = DB::singleton(dsn());
-        $RemoveSQL = SQL::newDelete('config');
-        $RemoveSQL->addWhereOpr('config_blog_id', BID);
-        $RemoveSQL->addWhereOpr('config_key', 'google_spreadsheet_accesstoken');
-        $DB->query($RemoveSQL->get(dsn()), 'exec');
-
-        $InsertSQL = SQL::newInsert('config');
-        $InsertSQL->addInsert('config_key', 'google_spreadsheet_accesstoken');
-        $InsertSQL->addInsert('config_value', $accessToken);
-        $InsertSQL->addInsert('config_blog_id', BID);
-        $DB->query($InsertSQL->get(dsn()), 'exec');
     }
 }

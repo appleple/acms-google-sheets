@@ -16,7 +16,7 @@ class Deauthorize extends ACMS_POST
         $DB = DB::singleton(dsn());
         $RemoveSQL = SQL::newDelete('config');
         $RemoveSQL->addWhereOpr('config_blog_id', BID);
-        $RemoveSQL->addWhereOpr('config_key', 'google_spreadsheet_accesstoken');
+        $RemoveSQL->addWhereIn('config_key', array('google_spreadsheet_accesstoken', 'google_spreadsheet_refreshtoken'));
         $DB->query($RemoveSQL->get(dsn()), 'exec');
 
         $this->redirect(acmsLink(array(

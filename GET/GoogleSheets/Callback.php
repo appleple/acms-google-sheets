@@ -21,7 +21,8 @@ class Callback extends ACMS_GET
             $code = $this->Get->get('code');
             $client->authenticate($code);
             $accessToken = $client->getAccessToken();
-            $api->updateAccessToken(json_encode($accessToken));
+            $refreshToken = $client->getRefreshToken();
+            $api->updateAccessToken(json_encode($accessToken), json_encode($refreshToken));
 
             redirect($base_uri);
         } catch (\Exception $e) {}
