@@ -2,32 +2,34 @@
 
 namespace Acms\Plugins\GoogleSheets;
 
-use Acms\Services\Facades\Storage;
 use DB;
 use SQL;
-use Config;
-use Cache;
-use Google_Client;
-use Google_Service_Sheets;
-use Google_Exception;
+use Acms\Services\Facades\Storage;
+use Acms\Services\Facades\Config;
+use Acms\Services\Facades\Cache;
+use Google\Client;
+use Google\Service\Sheets;
+use Google\Exception as GoogleException;
 
 class Api
 {
     protected $client = null;
-    
+
+    protected $config;
+
     /**
      * Api constructor.
      */
     public function __construct()
     {
-        $scopes = implode(' ', array(Google_Service_Sheets::SPREADSHEETS));
+        $scopes = implode(' ', array(Sheets::SPREADSHEETS));
 
         $this->config = Config::loadDefaultField();
         $this->config->overload(Config::loadBlogConfig(BID));
         $accessToken = json_decode($this->config->get('google_spreadsheet_accesstoken'), true);
         $refreshToken = json_decode($this->config->get('google_spreadsheet_refreshtoken'), true);
-        
-        $this->client = new Google_Client();
+
+        $this->client = new Client();
         $idJsonPath = $this->config->get('spreadsheet_clientid_json');
         $this->client->setApplicationName('ACMS');
         $this->client->setScopes($scopes);
@@ -63,7 +65,7 @@ class Api
         $data = json_decode($json);
         $key = isset($data->installed) ? 'installed' : 'web';
         if (!isset($data->$key)) {
-            throw new Google_Exception("Invalid client secret JSON file.");
+            throw new GoogleException("Invalid client secret JSON file.");
         }
         $this->client->setClientId($data->$key->client_id);
         $this->client->setClientSecret($data->$key->client_secret);
@@ -91,7 +93,7 @@ class Api
             $RemoveSQL->addWhereOpr('config_blog_id', BID);
             $RemoveSQL->addWhereOpr('config_key', 'google_spreadsheet_accesstoken');
             $DB->query($RemoveSQL->get(dsn()), 'exec');
-    
+
             $InsertSQL = SQL::newInsert('config');
             $InsertSQL->addInsert('config_key', 'google_spreadsheet_accesstoken');
             $InsertSQL->addInsert('config_value', $accessToken);
@@ -104,7 +106,7 @@ class Api
             $RemoveSQL->addWhereOpr('config_blog_id', BID);
             $RemoveSQL->addWhereOpr('config_key', 'google_spreadsheet_refreshtoken');
             $DB->query($RemoveSQL->get(dsn()), 'exec');
-    
+
             $InsertSQL = SQL::newInsert('config');
             $InsertSQL->addInsert('config_key', 'google_spreadsheet_refreshtoken');
             $InsertSQL->addInsert('config_value', $refreshToken);

@@ -3,8 +3,6 @@
 namespace Acms\Plugins\GoogleSheets\GET\GoogleSheets;
 
 use ACMS_GET;
-use Template;
-use ACMS_Corrector;
 use Acms\Plugins\GoogleSheets\Api;
 
 class Callback extends ACMS_GET

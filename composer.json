@@ -7,8 +7,8 @@
   ],
   "homepage": "https://www.a-blogcms.jp",
   "require": {
-    "php": ">=5.6",
-    "google/apiclient": "2.*.*"
+    "php": ">=7.2.5",
+    "google/apiclient": "^2.14"
   },
   "scripts": {
     "post-update-cmd": "Google_Task_Composer::cleanup"
@@ -21,7 +21,7 @@
   "config": {
     "vendor-dir": "vendor",
     "platform": {
-      "php": "5.6"
+      "php": "7.2.5"
     }
   }
 }
