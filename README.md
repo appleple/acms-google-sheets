@@ -67,7 +67,8 @@ define('HOOK_ENABLE', 1);
 
 ## 3. フォーム ID に書き込みしたい SpreadsheetID と SheetID を紐づける
 
-さらに CMS の管理ページで、フォーム ID に対して書き込みしたい Google Sheets の ID を指定する必要があります。管理画面 > フォームより、Google スプレッドシートと紐付けたいフォーム ID の変更画面に移動すると、「Google スプレッドシート Form 設定」という項目が増えています。
+管理画面 > フォームより、Google スプレッドシートと紐付けたいフォーム ID の変更画面に移動すると、「Google スプレッドシート Form 設定」という項目が増えています。
+Googleスプレッドシート連携を有効にし、フォーム ID に対して書き込みしたい Google Sheets の ID を指定してください。
 
 <img src="./images/set_sheetid.png" />
 

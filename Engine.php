@@ -76,7 +76,10 @@ class Engine
         foreach ($field->_aryField as $key => $val) {
             $values[] = $this->getCellData($field->getArray($key), $this->glue);
         }
-        $this->update($values);
+
+        if($this->config->get('spreadsheet_id')) {
+            $this->update($values);
+        }
     }
 
     /**

@@ -15,11 +15,19 @@ class Hook
     public function afterPostFire($thisModule)
     {
         $formCode = $thisModule->Post->get('id');
-
+        if(!$formCode) {
+            return;
+        }
         if (!($thisModule instanceof ACMS_POST_Form_Submit)) {
             return;
         }
-
+        $info = $thisModule->loadForm($formCode);
+        if (empty($info)) {
+            return;
+        }
+        if ($info['data']->getChild('mail')->get('spreadsheet_void') !== 'on') {
+            return;
+        };
         if (!$thisModule->Post->isValidAll()) {
             return;
         }

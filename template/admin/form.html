@@ -76,21 +76,48 @@
 <h2 class="acms-admin-admin-title2">Google スプレッドシート Form 設定</h2>
 <table class="acms-admin-table-admin-edit">
   <tr>
-    <th>Spreadsheet ID</th>
+    <th>
+      Google スプレッドシート連携<i
+        class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover"
+        data-acms-tooltip="チェックをすると、Google スプレッドシートの連携が有効になります。"
+      ></i>
+    </th>
+    <td>
+      <div class="acms-admin-form-checkbox">
+        <input type="hidden" name="spreadsheet_void" value="off">
+        <input type="checkbox" name="spreadsheet_void" value="on"{spreadsheet_void:checked#on} id="input-spreadsheet_void">
+        <label for="input-spreadsheet_void">
+          <i class="acms-admin-ico-checkbox"></i>有効
+        </label>
+      </div>
+      <input type="hidden" name="mail[]" value="spreadsheet_void">
+    </td>
+  </tr>
+  <tr>
+    <th>Spreadsheet ID<i
+      class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover"
+      data-acms-tooltip="Google スプレッドシートのIDを入力して下さい。"
+    ></i></th>
     <td>
       <input type="text" name="spreadsheet_id" value="{spreadsheet_id}" class="acms-admin-form-width-full" />
       <input type="hidden" name="mail[]" value="spreadsheet_id" />
     </td>
   </tr>
   <tr>
-    <th>Sheet ID</th>
+    <th>Sheet ID<i
+      class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover"
+      data-acms-tooltip="Google スプレッドシートのシートIDを入力して下さい。"
+    ></i></th>
     <td>
       <input type="text" name="sheet_id" value="{sheet_id}" class="acms-admin-form-width-full" />
       <input type="hidden" name="mail[]" value="sheet_id" />
     </td>
   </tr>
   <tr>
-    <th>区切り文字</th>
+    <th>区切り文字<i
+      class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover"
+      data-acms-tooltip="区切り文字を入力して下さい。"
+    ></i></th>
     <td>
       <input type="text" name="cell_glue" value="{cell_glue}" class="acms-admin-form-width-mini" placeholder="|" />
       <input type="hidden" name="mail[]" value="cell_glue" />
