@@ -17,7 +17,7 @@ class Callback extends ACMS_GET
                 'admin' => 'app_google_sheets_index',
             ));
             $code = $this->Get->get('code');
-            $client->authenticate($code);
+            $client->fetchAccessTokenWithAuthCode($code);
             $accessToken = $client->getAccessToken();
             $refreshToken = $client->getRefreshToken();
             $api->updateAccessToken(json_encode($accessToken), json_encode($refreshToken));
