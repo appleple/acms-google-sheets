@@ -1,86 +1,9 @@
-<h2 class="acms-admin-admin-title2"><!-- T -->Google スプレッドシート デフォルト設定<!-- /T --></h2>
-<table class="acms-admin-table-admin-edit">
-  <tr>
-    <td><!-- T -->チェックを入れた項目がデフォルトでSpreadSheetに送信されます<!-- /T --></td>
-  </tr>
-  <tr>
-    <td>
-      <div class="acms-admin-form-checkbox">
-        <input
-          type="checkbox"
-          name="spreadsheet_submit_date[]"
-          value="true"
-          id="input-spreadsheet_submit_date-true"
-          {spreadsheet_submit_date:checked#true}
-        />
-        <label for="input-spreadsheet_submit_date-true"
-          ><i class="acms-admin-ico-checkbox"></i
-          ><!-- T -->年月日時分秒<!-- /T --></label
-        >
-      </div>
-      <input type="hidden" name="mail[]" value="spreadsheet_submit_date" />
-      <div class="acms-admin-form-checkbox">
-        <input
-          type="checkbox"
-          name="spreadsheet_submit_formid[]"
-          value="true"
-          id="input-spreadsheet_submit_formid-true"
-          {spreadsheet_submit_formid:checked#true}
-        />
-        <label for="input-spreadsheet_submit_formid-true"><i class="acms-admin-ico-checkbox"></i>FormID</label>
-      </div>
-      <input type="hidden" name="mail[]" value="spreadsheet_submit_formid" />
-      <div class="acms-admin-form-checkbox">
-        <input
-          type="checkbox"
-          name="spreadsheet_submit_url[]"
-          value="true"
-          id="input-spreadsheet_submit_url-true"
-          {spreadsheet_submit_url:checked#true}
-        />
-        <label for="input-spreadsheet_submit_url-true"><i class="acms-admin-ico-checkbox"></i>URL</label>
-      </div>
-      <input type="hidden" name="mail[]" value="spreadsheet_submit_url" />
-      <div class="acms-admin-form-checkbox">
-        <input
-          type="checkbox"
-          name="spreadsheet_submit_ip[]"
-          value="true"
-          id="input-spreadsheet_submit_ip-true"
-          {spreadsheet_submit_ip:checked#true}
-        />
-        <label for="input-spreadsheet_submit_ip-true"
-          ><i class="acms-admin-ico-checkbox"></i
-          ><!-- T -->クライアントIPアドレス<!-- /T --></label
-        >
-      </div>
-      <input type="hidden" name="mail[]" value="spreadsheet_submit_ip" />
-      <div class="acms-admin-form-checkbox">
-        <input
-          type="checkbox"
-          name="spreadsheet_submit_agent[]"
-          value="true"
-          id="input-spreadsheet_submit_agent-true"
-          {spreadsheet_submit_agent:checked#true}
-        />
-        <label for="input-spreadsheet_submit_agent-true"
-          ><i class="acms-admin-ico-checkbox"></i
-          ><!-- T -->クライアントユーザーエージェント<!-- /T --></label
-        >
-      </div>
-      <input type="hidden" name="mail[]" value="spreadsheet_submit_agent" />
-    </td>
-  </tr>
-</table>
-
 <h2 class="acms-admin-admin-title2">Google スプレッドシート Form 設定</h2>
 <table class="acms-admin-table-admin-edit">
   <tr>
     <th>
-      Google スプレッドシート連携<i
-        class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover"
-        data-acms-tooltip="チェックをすると、Google スプレッドシートの連携が有効になります。"
-      ></i>
+      Google スプレッドシート連携
+      <i class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover" data-acms-tooltip="チェックをすると、Google スプレッドシートの連携が有効になります。"></i>
     </th>
     <td>
       <div class="acms-admin-form-checkbox">
@@ -94,34 +17,107 @@
     </td>
   </tr>
   <tr>
-    <th>Spreadsheet ID<i
-      class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover"
-      data-acms-tooltip="Google スプレッドシートのIDを入力して下さい。"
-    ></i></th>
+    <th>
+      Spreadsheet ID
+      <i class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover" data-acms-tooltip="Google スプレッドシートのIDを入力して下さい。"></i>
+    </th>
     <td>
       <input type="text" name="spreadsheet_id" value="{spreadsheet_id}" class="acms-admin-form-width-full" />
       <input type="hidden" name="mail[]" value="spreadsheet_id" />
     </td>
   </tr>
   <tr>
-    <th>Sheet ID<i
-      class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover"
-      data-acms-tooltip="Google スプレッドシートのシートIDを入力して下さい。"
-    ></i></th>
+    <th>
+      Sheet ID
+      <i class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover" data-acms-tooltip="Google スプレッドシートのシートIDを入力して下さい。"></i>
+    </th>
     <td>
       <input type="text" name="sheet_id" value="{sheet_id}" class="acms-admin-form-width-full" />
       <input type="hidden" name="mail[]" value="sheet_id" />
     </td>
   </tr>
   <tr>
-    <th>区切り文字<i
-      class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover"
-      data-acms-tooltip="区切り文字を入力して下さい。"
-    ></i></th>
+    <th>
+      区切り文字
+      <i class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover" data-acms-tooltip="区切り文字を入力して下さい。"></i>
+    </th>
     <td>
       <input type="text" name="cell_glue" value="{cell_glue}" class="acms-admin-form-width-mini" placeholder="|" />
       <input type="hidden" name="mail[]" value="cell_glue" />
       <span>複数値（チェックボックスなど）の値を区切る文字を設定します。</span>
+    </td>
+  </tr>
+
+  <tr>
+    <th>
+      送信する内容
+      <i class="acms-admin-icon-tooltip js-acms-tooltip js-acms-tooltip-hover" data-acms-tooltip="<!-- T -->チェックを入れた項目がデフォルトでSpreadSheetに送信されます<!-- /T -->"></i>
+    </th>
+    <td>
+      <div class="acms-admin-form-checkbox acms-admin-block">
+        <input
+          type="checkbox"
+          name="spreadsheet_submit_date[]"
+          value="true"
+          id="input-spreadsheet_submit_date-true"
+          {spreadsheet_submit_date:checked#true}
+        />
+        <label for="input-spreadsheet_submit_date-true">
+          <i class="acms-admin-ico-checkbox"></i>
+          <!-- T -->年月日時分秒<!-- /T -->
+        </label>
+      </div>
+      <input type="hidden" name="mail[]" value="spreadsheet_submit_date" />
+      <div class="acms-admin-form-checkbox">
+        <input
+          type="checkbox"
+          name="spreadsheet_submit_formid[]"
+          value="true"
+          id="input-spreadsheet_submit_formid-true"
+          {spreadsheet_submit_formid:checked#true}
+        />
+        <label for="input-spreadsheet_submit_formid-true"><i class="acms-admin-ico-checkbox"></i>FormID</label>
+      </div>
+      <input type="hidden" name="mail[]" value="spreadsheet_submit_formid" />
+      <div class="acms-admin-form-checkbox acms-admin-block">
+        <input
+          type="checkbox"
+          name="spreadsheet_submit_url[]"
+          value="true"
+          id="input-spreadsheet_submit_url-true"
+          {spreadsheet_submit_url:checked#true}
+        />
+        <label for="input-spreadsheet_submit_url-true"><i class="acms-admin-ico-checkbox"></i>URL</label>
+      </div>
+      <input type="hidden" name="mail[]" value="spreadsheet_submit_url" />
+      <div class="acms-admin-form-checkbox acms-admin-block">
+        <input
+          type="checkbox"
+          name="spreadsheet_submit_ip[]"
+          value="true"
+          id="input-spreadsheet_submit_ip-true"
+          {spreadsheet_submit_ip:checked#true}
+        />
+        <label for="input-spreadsheet_submit_ip-true">
+          <i class="acms-admin-ico-checkbox"></i>
+          <!-- T -->クライアントIPアドレス<!-- /T -->
+        </label>
+      </div>
+      <input type="hidden" name="mail[]" value="spreadsheet_submit_ip" />
+      <div class="acms-admin-form-checkbox acms-admin-block">
+        <input
+          type="checkbox"
+          name="spreadsheet_submit_agent[]"
+          value="true"
+          id="input-spreadsheet_submit_agent-true"
+          {spreadsheet_submit_agent:checked#true}
+        />
+        <label for="input-spreadsheet_submit_agent-true">
+          <i class="acms-admin-ico-checkbox"></i>
+          <!-- T -->クライアントユーザーエージェント<!-- /T -->
+        </label>
+      </div>
+      <input type="hidden" name="mail[]" value="spreadsheet_submit_agent" />
     </td>
   </tr>
 </table>
