@@ -6,8 +6,6 @@ const fs = require('fs-extra');
 const co = require('co');
 const { zipPromise } = require('./lib/system.js');
 
-const { version } = require('../package.json');
-
 const ignores = [
   '.git',
   '.gitignore',
@@ -37,7 +35,7 @@ co(function* () {
      */
     const copyFiles = fs.readdirSync('.');
     fs.mkdirsSync('GoogleSheets');
-    fs.mkdirsSync(`build/v${version}`);
+    fs.mkdirsSync('build');
 
     /**
      * copy plugins files
@@ -55,8 +53,7 @@ co(function* () {
       fs.removeSync(`GoogleSheets/${path}`);
     });
 
-    yield zipPromise('GoogleSheets', `./build/v${version}/GoogleSheets.zip`);
-    fs.copySync(`./build/v${version}/GoogleSheets.zip`, './build/GoogleSheets.zip');
+    yield zipPromise('GoogleSheets', `./build/GoogleSheets.zip`);
   } catch (err) {
     console.log(err);
   } finally {
