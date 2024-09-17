@@ -55,29 +55,29 @@ class Engine
     public function send()
     {
         $field = $this->module->Post->getChild('field');
-        $checkItems = array(
+        $checkItems = [
             'formId' => $this->config->get('spreadsheet_submit_formid'),
             'time' => $this->config->get('spreadsheet_submit_date'),
             'url' => $this->config->get('spreadsheet_submit_url'),
             'ipAddr' => $this->config->get('spreadsheet_submit_ip'),
             'ua' => $this->config->get('spreadsheet_submit_agent'),
-        );
-        $values = array();
+        ];
+        $values = [];
 
         foreach ($checkItems as $item => $check) {
             if ($check !== 'true') {
                 continue;
             }
-            $method = 'get' .ucwords($item);
-            if (is_callable(array('self', $method))) {
-                $values[] = call_user_func(array($this, $method));
+            $method = 'get' . ucwords($item);
+            if (is_callable([$this, $method])) {
+                $values[] = $this->$method();
             }
         }
         foreach ($field->_aryField as $key => $val) {
             $values[] = $this->getCellData($field->getArray($key), $this->glue);
         }
 
-        if($this->config->get('spreadsheet_id')) {
+        if ($this->config->get('spreadsheet_id')) {
             $this->update($values);
         }
     }
@@ -112,13 +112,13 @@ class Engine
         $request->setAppendCells($append_request);
 
         // Add the request to the requests array
-        $requests = array();
+        $requests = [];
         $requests[] = $request;
 
         // Prepare the update
-        $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest(array(
+        $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
             'requests' => $requests
-        ));
+        ]);
         // Execute the request
         $response = $service->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
 
