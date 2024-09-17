@@ -61,8 +61,6 @@ define('HOOK_ENABLE', 1);
 <img src="./images/app_screen.png" />
 そして先ほど設置したJSONファイルへのパスを記述します。絶対パスで記述しましょう。パスを記述後、設定を保存してから、「認証」ボタンをクリックして認証するようにしましょう。
 
-※ablogcms.io で行う場合は、ルートディレクトリには設置できないため、「themes」フォルダなどに JSON ファイルを設置します。 ablogcms.io での記述例： /var/www/vhost/xxxxxx.ablogcms.io/html/themes/xxxxxxxx.json
-
 ※認証はフォームの送信先となるブログで行ってください。
 
 ## 3. フォーム ID に書き込みしたい SpreadsheetID と SheetID を紐づける
