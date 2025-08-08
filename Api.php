@@ -58,6 +58,9 @@ class Api
 
     public function setAuthConfig($json)
     {
+        if (!$json) {
+            throw new \InvalidArgumentException('Empty JSON file path.');
+        }
         if (!Storage::exists($json)) {
             throw new \RuntimeException('Failed to open ' . $json);
         }
