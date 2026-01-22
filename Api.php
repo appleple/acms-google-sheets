@@ -4,9 +4,11 @@ namespace Acms\Plugins\GoogleSheets;
 
 use DB;
 use SQL;
-use Acms\Services\Facades\Storage;
+use Acms\Services\Facades\LocalStorage;
 use Acms\Services\Facades\Config;
 use Acms\Services\Facades\Cache;
+use Acms\Services\Facades\Logger;
+use Acms\Services\Facades\Common;
 use Google\Client;
 use Google\Service\Sheets;
 use Google\Exception as GoogleException;
@@ -22,24 +24,34 @@ class Api
      */
     public function __construct()
     {
-        $scopes = implode(' ', array(Sheets::SPREADSHEETS));
+        $scopes = implode(' ', [Sheets::SPREADSHEETS]);
 
         $this->config = Config::loadDefaultField();
         $this->config->overload(Config::loadBlogConfig(BID));
-        $accessToken = json_decode($this->config->get('google_spreadsheet_accesstoken'), true);
-        $refreshToken = json_decode($this->config->get('google_spreadsheet_refreshtoken'), true);
+        $accessTokenJson = $this->config->get('google_spreadsheet_accesstoken');
+        $accessToken = $accessTokenJson ? json_decode($accessTokenJson, true) : null;
+        if ($accessTokenJson && json_last_error() !== JSON_ERROR_NONE) {
+            $accessToken = null;
+        }
+        $refreshTokenJson = $this->config->get('google_spreadsheet_refreshtoken');
+        $refreshToken = $refreshTokenJson ? json_decode($refreshTokenJson, true) : null;
+        if ($refreshTokenJson && json_last_error() !== JSON_ERROR_NONE) {
+            $refreshToken = null;
+        }
 
         $this->client = new Client();
         $idJsonPath = $this->config->get('spreadsheet_clientid_json');
         $this->client->setApplicationName('ACMS');
         $this->client->setScopes($scopes);
-        $this->setAuthConfig($idJsonPath);
+        if ($idJsonPath !== '') {
+            $this->setAuthConfig($idJsonPath);
+        }
         $this->client->setAccessType('offline');
-        $this->client->setApprovalPrompt("force");
-        $redirect_uri = acmsLink(array(
+        $this->client->setPrompt("consent");
+        $redirect_uri = acmsLink([
             'bid' => BID,
             'admin' => 'app_google_sheets_callback',
-        ));
+        ]);
         $this->client->setRedirectUri($redirect_uri);
         if ($accessToken) {
             $this->client->setAccessToken($accessToken);
@@ -50,18 +62,25 @@ class Api
                     $refreshToken = $this->client->getRefreshToken();
                     $this->updateAccessToken(json_encode($accessToken), json_encode($refreshToken));
                 } catch (\Exception $e) {
-                    userErrorLog('ACMS Error: In GoogleSheets extension -> ' . $e->getMessage());
+                    Logger::error(
+                        '【Google Sheets】Google Sheets API のアクセストークンの更新に失敗しました。',
+                        Common::exceptionArray($e)
+                    );
                 }
             }
         }
     }
 
-    public function setAuthConfig($json)
+    /**
+     * @param string $json
+     * @return void
+     */
+    public function setAuthConfig($json): void
     {
-        if (!$json) {
+        if ($json === '') {
             throw new \InvalidArgumentException('Empty JSON file path.');
         }
-        if (!Storage::exists($json)) {
+        if (!LocalStorage::exists($json)) {
             throw new \RuntimeException('Failed to open ' . $json);
         }
         $json = file_get_contents($json);
@@ -77,18 +96,33 @@ class Api
         }
     }
 
-    public function getClient()
+    /**
+     * @return \Google\Client
+     */
+    public function getClient(): Client
     {
         return $this->client;
     }
 
-    public function getAccessToken()
+    /**
+     * @return array|null
+     */
+    public function getAccessToken(): ?array
     {
-        $accessToken = json_decode($this->config->get('google_spreadsheet_accesstoken'), true);
+        $accessTokenJson = $this->config->get('google_spreadsheet_accesstoken');
+        $accessToken = $accessTokenJson ? json_decode($accessTokenJson, true) : null;
+        if ($accessTokenJson && json_last_error() !== JSON_ERROR_NONE) {
+            $accessToken = null;
+        }
         return $accessToken;
     }
 
-    public function updateAccessToken($accessToken, $refreshToken)
+    /**
+     * @param string|null $accessToken
+     * @param string|null $refreshToken
+     * @return void
+     */
+    public function updateAccessToken(?string $accessToken, ?string $refreshToken): void
     {
         if (!!$accessToken) {
             $DB = DB::singleton(dsn());

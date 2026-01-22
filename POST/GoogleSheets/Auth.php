@@ -6,6 +6,9 @@ use Acms\Plugins\GoogleSheets\Api;
 
 class Auth extends ACMS_POST
 {
+    /**
+     * @inheritDoc
+     */
     public function post()
     {
         $api = new Api();

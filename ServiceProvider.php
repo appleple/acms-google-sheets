@@ -40,8 +40,9 @@ class ServiceProvider extends ACMS_App
 
     /**
      * サービスの起動処理
+     * @return void
      */
-    public function init()
+    public function init(): void
     {
         require_once dirname(__FILE__) . '/vendor/autoload.php';
         $hook = HookFactory::singleton();
@@ -62,7 +63,7 @@ class ServiceProvider extends ACMS_App
      *
      * @return bool
      */
-    public function checkRequirements()
+    public function checkRequirements(): bool
     {
         return true;
     }
@@ -73,7 +74,7 @@ class ServiceProvider extends ACMS_App
      *
      * @return void
      */
-    public function install()
+    public function install(): void
     {
     }
 
@@ -83,7 +84,7 @@ class ServiceProvider extends ACMS_App
      *
      * @return void
      */
-    public function uninstall()
+    public function uninstall(): void
     {
     }
 
@@ -92,7 +93,7 @@ class ServiceProvider extends ACMS_App
      *
      * @return bool
      */
-    public function update()
+    public function update(): bool
     {
         return true;
     }
@@ -102,7 +103,7 @@ class ServiceProvider extends ACMS_App
      *
      * @return bool
      */
-    public function activate()
+    public function activate(): bool
     {
         return true;
     }
@@ -112,7 +113,7 @@ class ServiceProvider extends ACMS_App
      *
      * @return bool
      */
-    public function deactivate()
+    public function deactivate(): bool
     {
         return true;
     }

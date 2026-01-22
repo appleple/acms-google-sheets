@@ -3,18 +3,18 @@
 namespace Acms\Plugins\GoogleSheets;
 
 use Field;
-use Google_Service_Sheets;
-use Google_Service_Sheets_Request;
-use Google_Service_Sheets_RowData;
-use Google_Service_Sheets_AppendCellsRequest;
-use Google_Service_Sheets_BatchUpdateSpreadsheetRequest;
-use Google_Service_Sheets_CellData;
-use Google_Service_Sheets_ExtendedValue;
+use Google\Service\Sheets;
+use Google\Service\Sheets\Request;
+use Google\Service\Sheets\RowData;
+use Google\Service\Sheets\AppendCellsRequest;
+use Google\Service\Sheets\BatchUpdateSpreadsheetRequest;
+use Google\Service\Sheets\CellData;
+use Google\Service\Sheets\ExtendedValue;
 
 class Engine
 {
     /**
-     * @var \ACMS_POST
+     * @var \ACMS_POST_Form
      */
     protected $module;
 
@@ -36,11 +36,12 @@ class Engine
     /**
      * Engine constructor.
      * @param string $code
+     * @param \ACMS_POST_Form $module
      */
-    public function __construct($code, $module)
+    public function __construct(string $code, $module)
     {
         $info = $module->loadForm($code);
-        if (empty($info)) {
+        if ($info === false) {
             throw new \RuntimeException('Not Found Form.');
         }
         $this->module = $module;
@@ -51,8 +52,9 @@ class Engine
 
     /**
      * Update Google Sheets
+     * @return void
      */
-    public function send()
+    public function send(): void
     {
         $field = $this->module->Post->getChild('field');
         $checkItems = [
@@ -86,29 +88,30 @@ class Engine
      * Send Google Sheets Api
      *
      * @param array $values
+     * @return void
      */
-    protected function update($values)
+    protected function update(array $values): void
     {
         $client = (new Api())->getClient();
         if (!$client->getAccessToken()) {
             throw new \RuntimeException('Failed to get the access token.');
         }
-        $service = new Google_Service_Sheets($client);
+        $service = new Sheets($client);
         $spreadsheetId = $this->config->get('spreadsheet_id');
         $spreadsheetGid = $this->config->get('sheet_id', 0);
 
         // Build the RowData
-        $rowData = new Google_Service_Sheets_RowData();
+        $rowData = new RowData();
         $rowData->setValues($values);
 
         // Prepare the request
-        $append_request = new Google_Service_Sheets_AppendCellsRequest();
+        $append_request = new AppendCellsRequest();
         $append_request->setSheetId($spreadsheetGid);
         $append_request->setRows($rowData);
         $append_request->setFields('userEnteredValue');
 
         // Set the request
-        $request = new Google_Service_Sheets_Request();
+        $request = new Request();
         $request->setAppendCells($append_request);
 
         // Add the request to the requests array
@@ -116,70 +119,67 @@ class Engine
         $requests[] = $request;
 
         // Prepare the update
-        $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
+        $batchUpdateRequest = new BatchUpdateSpreadsheetRequest([
             'requests' => $requests
         ]);
         // Execute the request
-        $response = $service->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
-
-        if (!$response->valid()) {
-            throw new \RuntimeException('Failed to update the sheet.');
-        }
+        $service->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
+        // 例外が発生しなければ成功とみなす（Google APIクライアントが例外を投げる）
     }
 
     /**
      * @param array|string $value
      * @param string $glue
-     * @return \Google_Service_Sheets_CellData
+     * @return CellData
      */
-    private function getCellData($value, $glue = ',')
+    private function getCellData($value, string $glue = ','): CellData
     {
         if (is_array($value)) {
             $value = implode($glue, $value);
         }
-        $cellData = new Google_Service_Sheets_CellData();
-        $extendedValue = new Google_Service_Sheets_ExtendedValue();
+        $cellData = new CellData();
+        $extendedValue = new ExtendedValue();
         $extendedValue->setStringValue($value);
         $cellData->setUserEnteredValue($extendedValue);
         return $cellData;
     }
 
     /**
-     * @return \Google_Service_Sheets_CellData
+     * @return CellData
      */
-    private function getTime()
+    private function getTime(): CellData
     {
         return $this->getCellData(date('Y-m-d H:i:s', REQUEST_TIME));
     }
 
     /**
-     * @return \Google_Service_Sheets_CellData
+     * @return CellData
      */
-    private function getFormId()
+    private function getFormId(): CellData
     {
         return $this->getCellData($this->code);
     }
 
     /**
-     * @return \Google_Service_Sheets_CellData
+     * @return CellData
      */
-    private function getUrl()
+    private function getUrl(): CellData
     {
         return $this->getCellData(REQUEST_URL);
     }
 
     /**
-     * @return \Google_Service_Sheets_CellData
+     * @return CellData
      */
-    private function getIpAddr()
+    private function getIpAddr(): CellData
     {
         return $this->getCellData(REMOTE_ADDR);
     }
 
     /**
-     * @return \Google_Service_Sheets_CellData
+     * @return CellData
      */
-    private function getUa()
+    private function getUa(): CellData
     {
         return $this->getCellData(UA);
     }

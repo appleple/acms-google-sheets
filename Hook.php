@@ -3,6 +3,8 @@
 namespace Acms\Plugins\GoogleSheets;
 
 use ACMS_POST_Form_Submit;
+use Acms\Services\Facades\Logger;
+use Acms\Services\Facades\Common;
 
 class Hook
 {
@@ -11,8 +13,9 @@ class Hook
      * $thisModuleのプロパティを参照・操作するなど
      *
      * @param \ACMS_POST $thisModule
+     * @return void
      */
-    public function afterPostFire($thisModule)
+    public function afterPostFire($thisModule): void
     {
         $formCode = $thisModule->Post->get('id');
         if(!$formCode) {
@@ -36,7 +39,7 @@ class Hook
             $step = $thisModule->Get->get('step');
         }
         $step = $thisModule->Post->get('step', $step);
-        if (in_array($step, array('forbidden', 'repeated'))) {
+        if (in_array($step, ['forbidden', 'repeated'])) {
             return;
         }
 
@@ -44,7 +47,10 @@ class Hook
             $engine = new Engine($formCode, $thisModule);
             $engine->send();
         } catch (\Exception $e) {
-            userErrorLog('ACMS Warning: Google Sheets plugin, ' . $e->getMessage());
+            Logger::warning(
+                '【Google Sheets】Google Sheets plugin: ' . $e->getMessage(),
+                Common::exceptionArray($e)
+            );
         }
     }
 }
