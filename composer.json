@@ -1,27 +1,41 @@
 {
-  "name": "appleple/acms-google-sheets",
-  "description": "Google SpreadSheet API と連携し、お問い合わせフォームなどで送信された内容を任意のGoogle SpreadSheet の最後の行に追記することができます。",
-  "keywords": [
-    "CMS",
-    "a-blog cms"
-  ],
-  "homepage": "https://www.a-blogcms.jp",
-  "require": {
-    "php": ">=8.1",
-    "google/apiclient": "^2.14"
-  },
-  "scripts": {
-    "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
-  },
-  "extra": {
-    "google/apiclient-services": [
-      "Sheets"
-    ]
-  },
-  "config": {
-    "vendor-dir": "vendor",
-    "platform": {
-      "php": "8.1"
+    "name": "appleple/acms-google-sheets",
+    "description": "Google SpreadSheet API と連携し、お問い合わせフォームなどで送信された内容を任意のGoogle SpreadSheet の最後の行に追記することができます。",
+    "keywords": [
+        "a-blog cms"
+    ],
+    "homepage": "https://www.a-blogcms.jp",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Acms\\Plugins\\GoogleSheets\\": "src/"
+        }
+    },
+    "scripts": {
+        "lint": "vendor/bin/phpcs --standard=phpcs.xml",
+        "format": "vendor/bin/phpcbf --standard=phpcs.xml",
+        "package": "@php scripts/package.php",
+        "version:set": "@php scripts/version.php",
+        "release:patch": "@php scripts/release.php patch",
+        "release:minor": "@php scripts/release.php minor",
+        "release:major": "@php scripts/release.php major"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.9",
+        "phpcompatibility/php-compatibility": "^10.0@dev"
+    },
+    "extra": {
+        "acms-plugin-tools": {}
+    },
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpcsstandards/composer-installer": true
+        },
+        "sort-packages": true,
+        "platform": {
+            "php": "8.5.0"
+        }
     }
-  }
 }

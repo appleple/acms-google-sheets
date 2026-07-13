@@ -18,7 +18,7 @@ class Hook
     public function afterPostFire($thisModule): void
     {
         $formCode = $thisModule->Post->get('id');
-        if(!$formCode) {
+        if (!$formCode) {
             return;
         }
         if (!($thisModule instanceof ACMS_POST_Form_Submit)) {

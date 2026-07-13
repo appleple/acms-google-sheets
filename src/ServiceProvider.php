@@ -46,7 +46,7 @@ class ServiceProvider extends ACMS_App
     {
         require_once dirname(__FILE__) . '/vendor/autoload.php';
         $hook = HookFactory::singleton();
-        $hook->attach('GoogleSheets', new Hook);
+        $hook->attach('GoogleSheets', new Hook());
         $inject = InjectTemplate::singleton();
 
         if (ADMIN === 'app_google_sheets_index') {
