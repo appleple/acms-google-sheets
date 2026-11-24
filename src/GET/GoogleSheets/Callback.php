@@ -14,6 +14,12 @@ class Callback extends ACMS_GET
      */
     public function get()
     {
+        if (!sessionWithAdministration()) {
+            Logger::notice('【Google Sheets plugin】管理者以外からの要求のため、処理を中断しました。', ['module' => static::class]);
+            http_response_code(403);
+            die();
+        }
+
         try {
             $api = new Api();
             $client = $api->getClient();
