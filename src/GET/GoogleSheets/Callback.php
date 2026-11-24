@@ -3,6 +3,7 @@
 namespace Acms\Plugins\GoogleSheets\GET\GoogleSheets;
 
 use ACMS_GET;
+use Acms\Services\Facades\Session;
 use Acms\Plugins\GoogleSheets\Api;
 use Acms\Services\Facades\Logger;
 use Acms\Services\Facades\Common;
@@ -16,6 +17,23 @@ class Callback extends ACMS_GET
     {
         if (!sessionWithAdministration()) {
             Logger::notice('【Google Sheets plugin】管理者以外からの要求のため、処理を中断しました。', ['module' => static::class]);
+            http_response_code(403);
+            die();
+        }
+
+        // 使い切りにするため、検証の成否にかかわらず先に破棄する
+        $session = Session::handle();
+        $expectedState = $session->get('google_sheets_oauth_state');
+        $session->delete('google_sheets_oauth_state');
+        $session->save();
+        $state = $this->Get->get('state');
+        if (
+            !is_string($expectedState)
+            || $expectedState === ''
+            || !is_string($state)
+            || !hash_equals($expectedState, $state)
+        ) {
+            Logger::notice('【Google Sheets plugin】OAuth の state が一致しないため、処理を中断しました。', ['module' => static::class]);
             http_response_code(403);
             die();
         }
